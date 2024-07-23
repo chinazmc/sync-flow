@@ -8,6 +8,7 @@ import (
 	"sync-flow/config"
 	"sync-flow/function"
 	"sync-flow/id"
+	"sync-flow/log"
 	"sync-flow/sf"
 )
 
@@ -30,6 +31,10 @@ type SfFlow struct {
 	// Function列表参数
 	funcParams map[string]config.FParam // flow在当前Function的自定义固定配置参数,Key:function的实例NsID, value:FParam
 	fplock     sync.RWMutex             // 管理funcParams的读写锁
+
+	buffer common.SfRowArr  // 用来临时存放输入字节数据的内部Buf, 一条数据为interface{}, 多条数据为[]interface{} 也就是SfBatch
+	data   common.SfDataMap // 流式计算各个层级的数据源
+	inPut  common.SfRowArr  // 当前Function的计算输入数据
 }
 
 // NewSfFlow 创建一个SfFlow.
@@ -46,6 +51,7 @@ func NewSfFlow(conf *config.SfFlowConfig) sf.Flow {
 	flow.Funcs = make(map[string]sf.Function)
 	flow.funcParams = make(map[string]config.FParam)
 
+	flow.data = make(common.SfDataMap)
 	return flow
 }
 
@@ -123,14 +129,46 @@ func (flow *SfFlow) Run(ctx context.Context) error {
 		//flow被配置关闭
 		return nil
 	}
+	// 因为此时还没有执行任何Function, 所以PrevFunctionId为FirstVirtual 因为没有上一层Function
+	flow.PrevFunctionId = common.FunctionIdFirstVirtual
 
+	// 提交数据流原始数据
+	if err := flow.commitSrcData(ctx); err != nil {
+		return err
+	}
 	//流式链式调用
 	for fn != nil {
+
+		// ========= 数据流 新增 ===========
+		// flow记录当前执行到的Function 标记
+		fid := fn.GetId()
+		flow.ThisFunction = fn
+		flow.ThisFunctionId = fid
+
+		// 得到当前Function要处理与的源数据
+		if inputData, err := flow.getCurData(); err != nil {
+			log.GetLogger().ErrorFX(ctx, "flow.Run(): getCurData err = %s\n", err.Error())
+			return err
+		} else {
+			flow.inPut = inputData
+		}
+		// ========= 数据流 新增 ===========
+
 		if err := fn.Call(ctx, flow); err != nil {
 			//Error
 			return err
 		} else {
 			//Success
+
+			// ========= 数据流 新增 ===========
+			if err := flow.commitCurData(ctx); err != nil {
+				return err
+			}
+
+			// 更新上一层FuncitonId游标
+			flow.PrevFunctionId = flow.ThisFunctionId
+			// ========= 数据流 新增 ===========
+
 			fn = fn.Next()
 		}
 	}
