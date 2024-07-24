@@ -4,15 +4,19 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="feat: first commit,init sync-flow.&#10;初步搭建flow,function,log,config等等模块">
+    <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="feat: 提供function注册能力,提供function模块下的执行存储引擎注册和使用">
+      <change afterPath="$PROJECT_DIR$/sf/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/sf_func_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_func_config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flow/sf_flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/flow/sf_flow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/function/kis_function_l.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_l.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_base_function.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_base_function.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_c.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_c.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_e.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_e.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_l.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_l.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_s.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_s.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_v.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_v.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sf/flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/flow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/kis_function_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_function_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/sf_flow_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_flow_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf/function.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/function.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +40,7 @@
   <component name="ProjectId" id="2jaxanTHAtKvXFxMkfaDKSbHoBo" />
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
+    <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -62,7 +67,7 @@
       <recent name="D:\company_project\sync-flow\log\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestNewKisFlowData in sync-flow/test">
+  <component name="RunManager" selected="Go Test.TestNewSfConnector in sync-flow/test">
     <configuration name="TestNewKisFlowData in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="sync-flow" />
       <working_directory value="$PROJECT_DIR$/test" />
@@ -73,6 +78,30 @@
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
       <pattern value="^\QTestNewKisFlowData\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestNewKisPool in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="sync-flow" />
+      <working_directory value="$PROJECT_DIR$/test" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="sync-flow/test" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewKisPool\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestNewSfConnector in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="sync-flow" />
+      <working_directory value="$PROJECT_DIR$/test" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="sync-flow/test" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewSfConnector\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestNewSfFlow in sf_flow_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -99,37 +128,13 @@
       <pattern value="^\QTestNewSfFunction\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestNewSfFunction in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="sync-flow" />
-      <working_directory value="$PROJECT_DIR$/test" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="sync-flow/test" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestNewSfFunction\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestSfLogger in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="sync-flow" />
-      <working_directory value="$PROJECT_DIR$/test" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="sync-flow/test" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestSfLogger\E$" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestNewSfConnector in sync-flow/test" />
+        <item itemvalue="Go Test.TestNewKisPool in sync-flow/test" />
         <item itemvalue="Go Test.TestNewKisFlowData in sync-flow/test" />
         <item itemvalue="Go Test.TestNewSfFlow in sf_flow_test.go" />
         <item itemvalue="Go Test.TestNewSfFunction in sync-flow/test (1)" />
-        <item itemvalue="Go Test.TestSfLogger in sync-flow/test" />
-        <item itemvalue="Go Test.TestNewSfFunction in sync-flow/test" />
       </list>
     </recent_temporary>
   </component>
@@ -162,7 +167,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: first commit,init sync-flow.&#10;初步搭建flow,function,log,config等等模块" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: first commit,init sync-flow.&#10;初步搭建flow,function,log,config等等模块" />
+    <MESSAGE value="feat: 确定数据的类型&#10;对于flow，进行数据的录入和流转和获取&#10;对于function,进行对数据的处理和流转" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 确定数据的类型&#10;对于flow，进行数据的录入和流转和获取&#10;对于function,进行对数据的处理和流转" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

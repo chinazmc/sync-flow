@@ -2,7 +2,7 @@ package function
 
 import (
 	"context"
-	"fmt"
+	"sync-flow/log"
 	"sync-flow/sf"
 )
 
@@ -11,9 +11,13 @@ type SfFunctionS struct {
 }
 
 func (f *SfFunctionS) Call(ctx context.Context, flow sf.Flow) error {
-	fmt.Printf("SfFunctionS, flow = %+v\n", flow)
+	log.GetLogger().InfoF("SfFunctionS, flow = %+v\n", flow)
 
-	// TODO 调用具体的Function执行方法
+	// 通过SfPool 路由到具体的执行计算Function中
+	if err := sf.Pool().CallFunction(ctx, f.Config.FName, flow); err != nil {
+		log.GetLogger().ErrorFX(ctx, "Function Called Error err = %s\n", err)
+		return err
+	}
 
 	return nil
 }

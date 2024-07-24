@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"sync-flow/common"
 	"sync-flow/log"
 )
@@ -29,6 +30,30 @@ type SfFuncConfig struct {
 	FMode  string       `yaml:"fmode"`
 	Source SfSource     `yaml:"source"`
 	Option SfFuncOption `yaml:"option"`
+
+	connConf *SfConnConfig
+}
+
+func (fConf *SfFuncConfig) AddConnConfig(cConf *SfConnConfig) error {
+	if cConf == nil {
+		return errors.New("SfConnConfig is nil")
+	}
+
+	// Function需要和Connector进行关联
+	fConf.connConf = cConf
+
+	// Connector需要和Function进行关联
+	_ = cConf.WithFunc(fConf)
+
+	return nil
+}
+
+func (fConf *SfFuncConfig) GetConnConfig() (*SfConnConfig, error) {
+	if fConf.connConf == nil {
+		return nil, errors.New("SfFuncConfig.connConf not set")
+	}
+
+	return fConf.connConf, nil
 }
 
 // NewFuncConfig 创建一个Function策略配置对象, 用于描述一个SfFunction信息

@@ -16,7 +16,8 @@ type BaseFunction struct {
 
 	// flow
 	Flow sf.Flow //上下文环境SfFlow
-
+	// connector
+	connector sf.Connector
 	// link
 	N sf.Function //下一个流计算Function
 	P sf.Function //上一个流计算Function
@@ -129,4 +130,20 @@ func NewSfFunction(flow sf.Flow, config *config.SfFuncConfig) sf.Function {
 	}
 
 	return f
+}
+
+// AddConnector 给当前Function实例添加一个Connector
+func (base *BaseFunction) AddConnector(conn sf.Connector) error {
+	if conn == nil {
+		return errors.New("conn is nil")
+	}
+
+	base.connector = conn
+
+	return nil
+}
+
+// GetConnector 获取当前Function实例所关联的Connector
+func (base *BaseFunction) GetConnector() sf.Connector {
+	return base.connector
 }

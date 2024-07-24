@@ -6,6 +6,7 @@ import (
 	"sync"
 	"sync-flow/common"
 	"sync-flow/config"
+	"sync-flow/conn"
 	"sync-flow/function"
 	"sync-flow/id"
 	"sync-flow/log"
@@ -61,6 +62,27 @@ func NewSfFlow(conf *config.SfFlowConfig) sf.Flow {
 func (flow *SfFlow) Link(fConf *config.SfFuncConfig, fParams config.FParam) error {
 	// 创建Function
 	f := function.NewSfFunction(flow, fConf)
+
+	if fConf.Option.CName != "" {
+		// 当前Function有Connector关联，需要初始化Connector实例
+
+		// 获取Connector配置
+		connConfig, err := fConf.GetConnConfig()
+		if err != nil {
+			panic(err)
+		}
+
+		// 创建Connector对象
+		connector := conn.NewSfConnector(connConfig)
+
+		// 初始化Connector, 执行Connector Init 方法
+		if err = connector.Init(); err != nil {
+			panic(err)
+		}
+
+		// 关联Function实例和Connector实例关系
+		_ = f.AddConnector(connector)
+	}
 
 	// Flow 添加 Function
 	if err := flow.appendFunc(f, fParams); err != nil {
@@ -174,4 +196,33 @@ func (flow *SfFlow) Run(ctx context.Context) error {
 	}
 
 	return nil
+}
+func (flow *SfFlow) GetName() string {
+	return flow.Name
+}
+
+func (flow *SfFlow) GetThisFunction() sf.Function {
+	return flow.ThisFunction
+}
+
+func (flow *SfFlow) GetThisFuncConf() *config.SfFuncConfig {
+	return flow.ThisFunction.GetConfig()
+}
+
+// GetConnector 得到当前正在执行的Function的Connector
+func (flow *SfFlow) GetConnector() (sf.Connector, error) {
+	if conn := flow.ThisFunction.GetConnector(); conn != nil {
+		return conn, nil
+	} else {
+		return nil, errors.New("GetConnector(): Connector is nil")
+	}
+}
+
+// GetConnConf 得到当前正在执行的Function的Connector的配置
+func (flow *SfFlow) GetConnConf() (*config.SfConnConfig, error) {
+	if conn := flow.ThisFunction.GetConnector(); conn != nil {
+		return conn.GetConfig(), nil
+	} else {
+		return nil, errors.New("GetConnConf(): Connector is nil")
+	}
 }
