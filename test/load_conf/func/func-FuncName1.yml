@@ -1,0 +1,8 @@
+sftype: func
+fname: funcName1
+fmode: Verify
+source:
+  name: 订单数据
+  must:
+    - order_id
+    - user_id
