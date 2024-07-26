@@ -1,0 +1,8 @@
+sftype: func
+fname: jumpFunc
+fmode: Calculate
+source:
+  name: 用户订单错误率
+  must:
+    - order_id
+    - user_id

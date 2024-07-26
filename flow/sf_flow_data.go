@@ -55,6 +55,7 @@ func (flow *SfFlow) commitCurData(ctx context.Context) error {
 
 	//判断本层计算是否有结果数据,如果没有则退出本次Flow Run循环
 	if len(flow.buffer) == 0 {
+		flow.abort = true
 		return nil
 	}
 
@@ -93,4 +94,39 @@ func (flow *SfFlow) getCurData() (common.SfRowArr, error) {
 // Input 得到flow当前执行Function的输入源数据
 func (flow *SfFlow) Input() common.SfRowArr {
 	return flow.inPut
+}
+
+// commitReuseData
+func (flow *SfFlow) commitReuseData(ctx context.Context) error {
+
+	// 判断上层是否有结果数据, 如果没有则退出本次Flow Run循环
+	if len(flow.data[flow.PrevFunctionId]) == 0 {
+		flow.abort = true
+		return nil
+	}
+
+	// 本层结果数据等于上层结果数据(复用上层结果数据到本层)
+	flow.data[flow.ThisFunctionId] = flow.data[flow.PrevFunctionId]
+
+	// 清空缓冲Buf (如果是ReuseData选项，那么提交的全部数据，都将不会携带到下一层)
+	flow.buffer = flow.buffer[0:0]
+
+	log.GetLogger().DebugFX(ctx, " ====> After commitReuseData, flow_name = %s, flow_id = %s\nAll Level Data =\n %+v\n", flow.Name, flow.Id, flow.data)
+
+	return nil
+}
+func (flow *SfFlow) commitVoidData(ctx context.Context) error {
+	if len(flow.buffer) != 0 {
+		return nil
+	}
+
+	// 制作空数据
+	batch := make(common.SfRowArr, 0)
+
+	// 将本层计算的缓冲数据提交到本层结果数据中
+	flow.data[flow.ThisFunctionId] = batch
+
+	log.GetLogger().DebugFX(ctx, " ====> After commitVoidData, flow_name = %s, flow_id = %s\nAll Level Data =\n %+v\n", flow.Name, flow.Id, flow.data)
+
+	return nil
 }

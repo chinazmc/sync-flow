@@ -30,4 +30,6 @@ type Flow interface {
 	GetConfig() *config.SfFlowConfig
 	// GetFuncConfigByName 得到当前Flow的配置
 	GetFuncConfigByName(funcName string) *config.SfFuncConfig
+	// Next 当前Flow执行到的Function进入下一层Function所携带的Action动作
+	Next(acts ...ActionFunc) error
 }

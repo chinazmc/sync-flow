@@ -1,0 +1,7 @@
+sftype: flow
+status: 1
+flow_name: flowName5
+flows:
+  - fname: funcName1
+  - fname: funcName2
+  - fname: jumpFunc
