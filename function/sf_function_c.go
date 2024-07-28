@@ -21,3 +21,11 @@ func (f *SfFunctionC) Call(ctx context.Context, flow sf.Flow) error {
 
 	return nil
 }
+func NewSfFunctionC() sf.Function {
+	f := new(SfFunctionC)
+
+	// 初始化metaData
+	f.metaData = make(map[string]interface{})
+
+	return f
+}

@@ -3,6 +3,7 @@ package flow
 import (
 	"context"
 	"errors"
+	"github.com/patrickmn/go-cache"
 	"sync"
 	"sync-flow/common"
 	"sync-flow/config"
@@ -11,6 +12,7 @@ import (
 	"sync-flow/id"
 	"sync-flow/log"
 	"sync-flow/sf"
+	"time"
 )
 
 // SfFlow 用于贯穿整条流式计算的上下文环境
@@ -39,6 +41,12 @@ type SfFlow struct {
 	// SfFlow Action
 	action sf.Action // 当前Flow所携带的Action动作
 	abort  bool      // 是否中断Flow
+
+	// flow的本地缓存
+	cache *cache.Cache // Flow流的临时缓存上线文环境
+	// flow的metaData
+	metaData map[string]interface{} // Flow的自定义临时数据
+	mLock    sync.RWMutex           // 管理metaData的读写锁
 }
 
 // NewSfFlow 创建一个SfFlow.
@@ -56,6 +64,11 @@ func NewSfFlow(conf *config.SfFlowConfig) sf.Flow {
 	flow.funcParams = make(map[string]config.FParam)
 
 	flow.data = make(common.SfDataMap)
+
+	// 初始化本地缓存
+	flow.cache = cache.New(cache.NoExpiration, common.DeFaultFlowCacheCleanUp*time.Minute)
+	// 初始化临时数据
+	flow.metaData = make(map[string]interface{})
 	return flow
 }
 
@@ -246,4 +259,36 @@ func (flow *SfFlow) Next(acts ...sf.ActionFunc) error {
 	flow.action = sf.LoadActions(acts)
 
 	return nil
+}
+
+// Fork 得到Flow的一个副本(深拷贝)
+func (flow *SfFlow) Fork(ctx context.Context) sf.Flow {
+
+	config := flow.Conf
+
+	// 通过之前的配置生成一个新的Flow
+	newFlow := NewSfFlow(config)
+
+	for _, fp := range flow.Conf.Flows {
+		if _, ok := flow.funcParams[flow.Funcs[fp.FuncName].GetId()]; !ok {
+			//当前function没有配置Params
+			newFlow.Link(flow.Funcs[fp.FuncName].GetConfig(), nil)
+		} else {
+			//当前function有配置Params
+			newFlow.Link(flow.Funcs[fp.FuncName].GetConfig(), fp.Params)
+		}
+	}
+
+	log.GetLogger().DebugFX(ctx, "=====>Flow Fork, oldFlow.funcParams = %+v\n", flow.funcParams)
+	log.GetLogger().DebugFX(ctx, "=====>Flow Fork, newFlow.funcParams = %+v\n", newFlow.GetFuncParamsAllFuncs())
+
+	return newFlow
+}
+
+// GetFuncParamsAllFuncs 得到Flow中所有Function的FuncParams，取出全部Key-Value
+func (flow *SfFlow) GetFuncParamsAllFuncs() map[string]config.FParam {
+	flow.fplock.RLock()
+	defer flow.fplock.RUnlock()
+
+	return flow.funcParams
 }

@@ -19,6 +19,10 @@ type SfConnector struct {
 
 	// Connector Init
 	onceInit sync.Once
+	// SfConnector的自定义临时数据
+	metaData map[string]interface{}
+	// 管理metaData的读写锁
+	mLock sync.RWMutex
 }
 
 // NewSfConnector 根据配置策略创建一个SfConnector
@@ -27,7 +31,7 @@ func NewSfConnector(config *config.SfConnConfig) *SfConnector {
 	conn.CId = id.SfID(common.SfIdTypeConnnector)
 	conn.CName = config.CName
 	conn.Conf = config
-
+	conn.metaData = make(map[string]interface{})
 	return conn
 }
 
@@ -62,4 +66,25 @@ func (conn *SfConnector) GetConfig() *config.SfConnConfig {
 
 func (conn *SfConnector) GetId() string {
 	return conn.CId
+}
+
+// GetMetaData 得到当前Connector的临时数据
+func (conn *SfConnector) GetMetaData(key string) interface{} {
+	conn.mLock.RLock()
+	defer conn.mLock.RUnlock()
+
+	data, ok := conn.metaData[key]
+	if !ok {
+		return nil
+	}
+
+	return data
+}
+
+// SetMetaData 设置当前Connector的临时数据
+func (conn *SfConnector) SetMetaData(key string, value interface{}) {
+	conn.mLock.Lock()
+	defer conn.mLock.Unlock()
+
+	conn.metaData[key] = value
 }
