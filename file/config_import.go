@@ -3,7 +3,7 @@ package file
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path"
@@ -11,6 +11,7 @@ import (
 	"sync-flow/common"
 	"sync-flow/config"
 	"sync-flow/flow"
+	"sync-flow/metrics"
 	"sync-flow/sf"
 )
 
@@ -122,7 +123,8 @@ func parseConfigWalkYaml(loadPath string) (*allConfig, error) {
 
 			case common.SfIdTypeConnnector:
 				return sfTypeConnConfigure(all, confData, filePath, sfType)
-
+			case common.SfIdTypeGlobal:
+				return sfTypeGlobalConfigure(confData, filePath, sfType)
 			default:
 				return errors.New(fmt.Sprintf("%s set wrong sftype %s", filePath, sfType))
 			}
@@ -182,6 +184,19 @@ func buildFlow(all *allConfig, fp config.SfFlowFunctionParam, newFlow sf.Flow, f
 			return err
 		}
 	}
+
+	return nil
+}
+
+// sfTypeGlobalConfigure 解析Global配置文件，yaml格式
+func sfTypeGlobalConfigure(confData []byte, fileName string, sfType interface{}) error {
+	// 全局配置
+	if ok := yaml.Unmarshal(confData, config.GlobalConfig); ok != nil {
+		return errors.New(fmt.Sprintf("%s is wrong format sfType = %s", fileName, sfType))
+	}
+
+	// 启动Metrics服务
+	metrics.RunMetrics()
 
 	return nil
 }
