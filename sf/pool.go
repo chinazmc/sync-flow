@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 	"sync"
 	"sync-flow/common"
 	"sync-flow/log"
@@ -76,11 +77,18 @@ func (pool *sfPool) GetFlow(name string) Flow {
 
 // FaaS 注册 Function 计算业务逻辑, 通过Function Name 索引及注册
 func (pool *sfPool) FaaS(fnName string, f FaaS) {
-	pool.fnLock.Lock()
+	// 当注册FaaS计算逻辑回调时，创建一个FaaSDesc描述对象
+	faaSDesc, err := NewFaaSDesc(fnName, f)
+	if err != nil {
+		panic(err)
+	}
+
+	pool.fnLock.Lock() // 写锁
 	defer pool.fnLock.Unlock()
 
 	if _, ok := pool.fnRouter[fnName]; !ok {
-		pool.fnRouter[fnName] = f
+		// 将FaaSDesc描述对象注册到fnRouter中
+		pool.fnRouter[fnName] = faaSDesc
 	} else {
 		errString := fmt.Sprintf("SfPoll FaaS Repeat FuncName=%s", fnName)
 		panic(errString)
@@ -92,8 +100,53 @@ func (pool *sfPool) FaaS(fnName string, f FaaS) {
 // CallFunction 调度 Function
 func (pool *sfPool) CallFunction(ctx context.Context, fnName string, flow Flow) error {
 
-	if f, ok := pool.fnRouter[fnName]; ok {
-		return f(ctx, flow)
+	if funcDesc, ok := pool.fnRouter[fnName]; ok {
+
+		// 被调度Function的形参列表
+		params := make([]reflect.Value, 0, funcDesc.ArgNum)
+
+		for _, argType := range funcDesc.ArgsType {
+
+			// 如果是Flow类型形参，则将 flow的值传入
+			if isFlowType(argType) {
+				params = append(params, reflect.ValueOf(flow))
+				continue
+			}
+
+			// 如果是Context类型形参，则将 ctx的值传入
+			if isContextType(argType) {
+				params = append(params, reflect.ValueOf(ctx))
+				continue
+			}
+
+			// 如果是Slice类型形参，则将 flow.Input()的值传入
+			if isSliceType(argType) {
+				// 将flow.Input()中的原始数据，反序列化为argType类型的数据
+				value, err := funcDesc.Serialize.UnMarshal(flow.Input(), argType)
+				if err != nil {
+					log.GetLogger().ErrorFX(ctx, "funcDesc.Serialize.DecodeParam err=%v", err)
+				} else {
+					params = append(params, value)
+					continue
+				}
+			}
+
+			// 传递的参数，既不是Flow类型，也不是Context类型，也不是Slice类型，则默认给到零值
+			params = append(params, reflect.Zero(argType))
+		}
+
+		// 调用当前Function 的计算逻辑
+		retValues := funcDesc.FuncValue.Call(params)
+
+		// 取出第一个返回值，如果是nil，则返回nil
+		ret := retValues[0].Interface()
+		if ret == nil {
+			return nil
+		}
+
+		// 如果返回值是error类型，则返回error
+		return retValues[0].Interface().(error)
+
 	}
 
 	log.GetLogger().ErrorFX(ctx, "FuncName: %s Can not find in SfPool, Not Added.\n", fnName)

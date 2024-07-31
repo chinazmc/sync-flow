@@ -5,13 +5,10 @@ import (
 	"sync-flow/common"
 )
 
-// FaaS Function as a Service
-type FaaS func(context.Context, Flow) error
-
 // funcRouter
 // key: Function Name
 // value: Function 回调自定义业务
-type funcRouter map[string]FaaS
+type funcRouter map[string]*FaaSDesc
 
 // flowRouter
 // key: Flow Name
