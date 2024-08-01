@@ -65,8 +65,11 @@ func NewFuncConfig(
 	config.FName = funcName
 
 	if source == nil {
+		defaultSource := SfSource{
+			Name: "unNamedSource",
+		}
+		source = &defaultSource
 		log.GetLogger().ErrorF("funcName NewConfig Error, source is nil, funcName = %s\n", funcName)
-		return nil
 	}
 	config.Source = *source
 

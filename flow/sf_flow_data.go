@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/patrickmn/go-cache"
+	"reflect"
 	"sync-flow/common"
 	"sync-flow/config"
 	"sync-flow/log"
@@ -15,6 +16,21 @@ import (
 func (flow *SfFlow) CommitRow(row interface{}) error {
 
 	flow.buffer = append(flow.buffer, row)
+
+	return nil
+}
+
+// CommitRowBatch 提交Flow数据, 批量数据
+func (flow *SfFlow) CommitRowBatch(rows interface{}) error {
+	v := reflect.ValueOf(rows)
+	if v.Kind() != reflect.Slice {
+		return fmt.Errorf("Commit Data is not a slice")
+	}
+
+	for i := 0; i < v.Len(); i++ {
+		row := v.Index(i).Interface().(common.SfRow)
+		flow.buffer = append(flow.buffer, row)
+	}
 
 	return nil
 }

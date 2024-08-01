@@ -74,10 +74,26 @@ func NewSfFlow(conf *config.SfFlowConfig) sf.Flow {
 	return flow
 }
 
-// Link 将Function链接到Flow中
+// Link 将Function链接到Flow中, 同时会将Function的配置参数添加到Flow的配置中
 // fConf: 当前Function策略
 // fParams: 当前Flow携带的Function动态参数
 func (flow *SfFlow) Link(fConf *config.SfFuncConfig, fParams config.FParam) error {
+
+	// Flow 添加Function
+	_ = flow.AppendNewFunction(fConf, fParams)
+
+	// FlowConfig 添加Function
+	flowFuncParam := config.SfFlowFunctionParam{
+		FuncName: fConf.FName,
+		Params:   fParams,
+	}
+	flow.Conf.AppendFunctionConfig(flowFuncParam)
+
+	return nil
+}
+
+// AppendNewFunction 将一个新的Function追加到到Flow中
+func (flow *SfFlow) AppendNewFunction(fConf *config.SfFuncConfig, fParams config.FParam) error {
 	// 创建Function
 	f := function.NewSfFunction(flow, fConf)
 
@@ -305,10 +321,10 @@ func (flow *SfFlow) Fork(ctx context.Context) sf.Flow {
 	for _, fp := range flow.Conf.Flows {
 		if _, ok := flow.funcParams[flow.Funcs[fp.FuncName].GetId()]; !ok {
 			//当前function没有配置Params
-			newFlow.Link(flow.Funcs[fp.FuncName].GetConfig(), nil)
+			newFlow.AppendNewFunction(flow.Funcs[fp.FuncName].GetConfig(), nil)
 		} else {
 			//当前function有配置Params
-			newFlow.Link(flow.Funcs[fp.FuncName].GetConfig(), fp.Params)
+			newFlow.AppendNewFunction(flow.Funcs[fp.FuncName].GetConfig(), fp.Params)
 		}
 	}
 
