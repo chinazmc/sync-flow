@@ -260,7 +260,9 @@ func (flow *SfFlow) Run(ctx context.Context) error {
 func (flow *SfFlow) GetName() string {
 	return flow.Name
 }
-
+func (flow *SfFlow) GetId() string {
+	return flow.Id
+}
 func (flow *SfFlow) GetThisFunction() sf.Function {
 	return flow.ThisFunction
 }

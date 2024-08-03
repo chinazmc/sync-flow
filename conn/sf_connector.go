@@ -48,12 +48,16 @@ func (conn *SfConnector) Init() error {
 }
 
 // Call 调用Connector 外挂存储逻辑的读写操作
-func (conn *SfConnector) Call(ctx context.Context, flow sf.Flow, args interface{}) error {
-	if err := sf.Pool().CallConnector(ctx, flow, conn, args); err != nil {
-		return err
+func (conn *SfConnector) Call(ctx context.Context, flow sf.Flow, args interface{}) (interface{}, error) {
+	var result interface{}
+	var err error
+
+	result, err = sf.Pool().CallConnector(ctx, flow, conn, args)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil
+	return result, nil
 }
 
 func (conn *SfConnector) GetName() string {

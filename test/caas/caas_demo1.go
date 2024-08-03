@@ -8,11 +8,11 @@ import (
 
 // type CaaS func(context.Context, Connector, Function, Flow, interface{}) error
 
-func CaasDemoHanler1(ctx context.Context, conn sf.Connector, fn sf.Function, flow sf.Flow, args interface{}) error {
+func CaasDemoHanler1(ctx context.Context, conn sf.Connector, fn sf.Function, flow sf.Flow, args interface{}) (interface{}, error) {
 	fmt.Printf("===> In CaasDemoHanler1: flowName: %s, cName:%s, fnName:%s, mode:%s\n",
 		flow.GetName(), conn.GetName(), fn.GetConfig().FName, fn.GetConfig().FMode)
 
 	fmt.Printf("===> Call Connector CaasDemoHanler1, args from funciton: %s\n", args)
 
-	return nil
+	return nil, nil
 }

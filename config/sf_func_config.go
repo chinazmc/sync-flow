@@ -44,7 +44,8 @@ func (fConf *SfFuncConfig) AddConnConfig(cConf *SfConnConfig) error {
 
 	// Connector需要和Function进行关联
 	_ = cConf.WithFunc(fConf)
-
+	// 更新Function配置中的CName
+	fConf.Option.CName = cConf.CName
 	return nil
 }
 
@@ -76,15 +77,15 @@ func NewFuncConfig(
 	config.FMode = string(mode)
 
 	//FunctionS 和 L 需要必传SfConnector参数,原因是S和L需要通过Connector进行建立流式关系
-	if mode == common.S || mode == common.L {
-		if option == nil {
-			log.GetLogger().ErrorF("Funcion S/L need option->Cid\n")
-			return nil
-		} else if option.CName == "" {
-			log.GetLogger().ErrorF("Funcion S/L need option->Cid\n")
-			return nil
-		}
-	}
+	//if mode == common.S || mode == common.L {
+	//	if option == nil {
+	//		log.GetLogger().ErrorF("Funcion S/L need option->Cid\n")
+	//		return nil
+	//	} else if option.CName == "" {
+	//		log.GetLogger().ErrorF("Funcion S/L need option->Cid\n")
+	//		return nil
+	//	}
+	//}
 
 	if option != nil {
 		config.Option = *option

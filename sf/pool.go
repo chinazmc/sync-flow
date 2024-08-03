@@ -208,7 +208,7 @@ func (pool *sfPool) CaaS(cname string, fname string, mode common.SfMode, c CaaS)
 }
 
 // CallConnector 调度 Connector
-func (pool *sfPool) CallConnector(ctx context.Context, flow Flow, conn Connector, args interface{}) error {
+func (pool *sfPool) CallConnector(ctx context.Context, flow Flow, conn Connector, args interface{}) (interface{}, error) {
 	fn := flow.GetThisFunction()
 	fnConf := fn.GetConfig()
 	mode := common.SfMode(fnConf.FMode)
@@ -219,7 +219,7 @@ func (pool *sfPool) CallConnector(ctx context.Context, flow Flow, conn Connector
 
 	log.GetLogger().ErrorFX(ctx, "CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.\n", conn.GetName(), fnConf.FName, mode)
 
-	return errors.New(fmt.Sprintf("CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.", conn.GetName(), fnConf.FName, mode))
+	return nil, errors.New(fmt.Sprintf("CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.", conn.GetName(), fnConf.FName, mode))
 }
 
 // GetFlows 得到全部的Flow
