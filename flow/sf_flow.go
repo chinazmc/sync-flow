@@ -83,7 +83,7 @@ func (flow *SfFlow) Link(fConf *config.SfFuncConfig, fParams config.FParam) erro
 	_ = flow.AppendNewFunction(fConf, fParams)
 
 	// FlowConfig 添加Function
-	flowFuncParam := config.SfFlowFunctionParam{
+	flowFuncParam := config.SfFunctionParam{
 		FuncName: fConf.FName,
 		Params:   fParams,
 	}
@@ -320,7 +320,7 @@ func (flow *SfFlow) Fork(ctx context.Context) sf.Flow {
 	// 通过之前的配置生成一个新的Flow
 	newFlow := NewSfFlow(config)
 
-	for _, fp := range flow.Conf.Flows {
+	for _, fp := range flow.Conf.Funcs {
 		if _, ok := flow.funcParams[flow.Funcs[fp.FuncName].GetId()]; !ok {
 			//当前function没有配置Params
 			newFlow.AppendNewFunction(flow.Funcs[fp.FuncName].GetConfig(), nil)

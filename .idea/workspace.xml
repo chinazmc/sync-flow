@@ -4,17 +4,17 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="feat: Connector Call方法添加回参">
+    <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/sf_func_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_func_config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conn/sf_connector.go" beforeDir="false" afterPath="$PROJECT_DIR$/conn/sf_connector.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/sf_flow_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_flow_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file/config_import.go" beforeDir="false" afterPath="$PROJECT_DIR$/file/config_import.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flow/sf_flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/flow/sf_flow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sf/connector.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/connector.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sf/flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/flow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sf/pool.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/pool.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sf/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/caas/caas_demo1.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/caas/caas_demo1.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/faas/faas_demo2.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_demo2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName2.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName5.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName5.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/flow-StuAvg.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/flow-StuAvg.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/func-FlowName3.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/func-FlowName3.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sf_config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_config_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +175,8 @@
     <MESSAGE value="feat:Metrics 全量数据,Flow处理数据总量、Flow被调度次数、Function被调度次数、Flow执行时间、Function执行时间" />
     <MESSAGE value="feat: 反射自适应注册FaaS形参类型" />
     <MESSAGE value="fix: 修改日志打印方式，添加func配置信息到flow" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: 修改日志打印方式，添加func配置信息到flow" />
+    <MESSAGE value="feat: Connector Call方法添加回参" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Connector Call方法添加回参" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

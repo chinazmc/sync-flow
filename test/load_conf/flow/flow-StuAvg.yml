@@ -1,6 +1,6 @@
 sftype: flow
 status: 1
 flow_name: StuAvg
-flows:
+funcs:
   - fname: AvgStuScore
   - fname: PrintStuAvgScore

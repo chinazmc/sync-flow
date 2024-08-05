@@ -31,7 +31,7 @@ func TestNewFuncConfig(t *testing.T) {
 
 func TestNewFlowConfig(t *testing.T) {
 
-	flowFuncParams1 := config.SfFlowFunctionParam{
+	flowFuncParams1 := config.SfFunctionParam{
 		FuncName: "funcName1",
 		Params: config.FParam{
 			"flowSetFunParam1": "value1",
@@ -39,7 +39,7 @@ func TestNewFlowConfig(t *testing.T) {
 		},
 	}
 
-	flowFuncParams2 := config.SfFlowFunctionParam{
+	flowFuncParams2 := config.SfFunctionParam{
 		FuncName: "funcName2",
 		Params: config.FParam{
 			"default": "value1",

@@ -22,7 +22,7 @@ func ConfigExportYaml(flow sf.Flow, savaPath string) error {
 		}
 
 		//function
-		for _, fp := range flow.GetConfig().Flows {
+		for _, fp := range flow.GetConfig().Funcs {
 			fConf := flow.GetFuncConfigByName(fp.FuncName)
 			if fConf == nil {
 				return errors.New(fmt.Sprintf("function name = %s config is nil ", fp.FuncName))

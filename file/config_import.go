@@ -151,7 +151,7 @@ func ConfigImportYaml(loadPath string) error {
 		// 构建一个Flow
 		newFlow := flow.NewSfFlow(flowConfig)
 
-		for _, fp := range flowConfig.Flows {
+		for _, fp := range flowConfig.Funcs {
 			if err := buildFlow(all, fp, newFlow, flowName); err != nil {
 				return err
 			}
@@ -163,7 +163,7 @@ func ConfigImportYaml(loadPath string) error {
 
 	return nil
 }
-func buildFlow(all *allConfig, fp config.SfFlowFunctionParam, newFlow sf.Flow, flowName string) error {
+func buildFlow(all *allConfig, fp config.SfFunctionParam, newFlow sf.Flow, flowName string) error {
 	//加载当前Flow依赖的Function
 	if funcConfig, ok := all.Funcs[fp.FuncName]; !ok {
 		return errors.New(fmt.Sprintf("FlowName [%s] need FuncName [%s], But has No This FuncName Config", flowName, fp.FuncName))
