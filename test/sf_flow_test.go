@@ -22,12 +22,12 @@ func TestNewSfFlow(t *testing.T) {
 		Must: []string{"order_id", "user_id"},
 	}
 
-	myFuncConfig1 := config.NewFuncConfig("funcName1", common.C, &source1, nil)
+	myFuncConfig1 := config.NewFuncConfig("funcName1", common.Calculate, &source1, nil)
 	if myFuncConfig1 == nil {
 		panic("myFuncConfig1 is nil")
 	}
 
-	myFuncConfig2 := config.NewFuncConfig("funcName2", common.V, &source2, nil)
+	myFuncConfig2 := config.NewFuncConfig("funcName2", common.Verify, &source2, nil)
 	if myFuncConfig2 == nil {
 		panic("myFuncConfig2 is nil")
 	}
@@ -65,12 +65,12 @@ func TestNewSfFlowData(t *testing.T) {
 		Must: []string{"order_id", "user_id"},
 	}
 
-	myFuncConfig1 := config.NewFuncConfig("funcName1", common.C, &source1, nil)
+	myFuncConfig1 := config.NewFuncConfig("funcName1", common.Calculate, &source1, nil)
 	if myFuncConfig1 == nil {
 		panic("myFuncConfig1 is nil")
 	}
 
-	myFuncConfig2 := config.NewFuncConfig("funcName2", common.E, &source2, nil)
+	myFuncConfig2 := config.NewFuncConfig("funcName2", common.Expand, &source2, nil)
 	if myFuncConfig2 == nil {
 		panic("myFuncConfig2 is nil")
 	}

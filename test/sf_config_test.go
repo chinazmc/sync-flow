@@ -24,7 +24,7 @@ func TestNewFuncConfig(t *testing.T) {
 		},
 	}
 
-	myFunc1 := config.NewFuncConfig("funcName1", common.S, &source, &option)
+	myFunc1 := config.NewFuncConfig("funcName1", common.Save, &source, &option)
 
 	log.GetLogger().InfoF("funcName1: %+v\n", myFunc1)
 }
@@ -70,7 +70,7 @@ func TestNewConnConfig(t *testing.T) {
 		},
 	}
 
-	myFunc1 := config.NewFuncConfig("funcName1", common.S, &source, &option)
+	myFunc1 := config.NewFuncConfig("funcName1", common.Save, &source, &option)
 
 	connParams := config.FParam{
 		"param1": "value1",

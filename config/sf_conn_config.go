@@ -13,7 +13,7 @@ type SfConnConfig struct {
 	//唯一描述标识
 	CName string `yaml:"cname"`
 	//基础存储媒介地址
-	AddrString string `yaml:"addrs"`
+	Addrs string `yaml:"addrs"`
 	//存储媒介引擎类型"Mysql" "Redis" "Kafka"等
 	Type common.SfConnType `yaml:"type"`
 	//一次存储的标识：如Redis为Key名称、Mysql为Table名称,Kafka为Topic名称等
@@ -29,7 +29,7 @@ type SfConnConfig struct {
 func NewConnConfig(cName string, addr string, t common.SfConnType, key string, param FParam) *SfConnConfig {
 	strategy := new(SfConnConfig)
 	strategy.CName = cName
-	strategy.AddrString = addr
+	strategy.Addrs = addr
 
 	strategy.Type = t
 	strategy.Key = key
@@ -42,9 +42,9 @@ func NewConnConfig(cName string, addr string, t common.SfConnType, key string, p
 func (cConfig *SfConnConfig) WithFunc(fConfig *SfFuncConfig) error {
 
 	switch common.SfMode(fConfig.FMode) {
-	case common.S:
+	case common.Save:
 		cConfig.Save = append(cConfig.Save, fConfig.FName)
-	case common.L:
+	case common.Load:
 		cConfig.Load = append(cConfig.Load, fConfig.FName)
 	default:
 		return errors.New(fmt.Sprintf("Wrong SfMode %s", fConfig.FMode))

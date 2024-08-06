@@ -18,7 +18,7 @@ func TestNewSfFunction(t *testing.T) {
 		Must: []string{"order_id", "user_id"},
 	}
 
-	myFuncConfig1 := config.NewFuncConfig("funcName1", common.C, &source, nil)
+	myFuncConfig1 := config.NewFuncConfig("funcName1", common.Calculate, &source, nil)
 	if myFuncConfig1 == nil {
 		panic("myFuncConfig1 is nil")
 	}

@@ -20,7 +20,7 @@ func TestConfigImportYmal(t *testing.T) {
 
 	// 0. 注册ConnectorInit 和 Connector 回调业务
 	sf.Pool().CaaSInit("ConnName1", caas.InitConnDemo1)
-	sf.Pool().CaaS("ConnName1", "funcName2", common.S, caas.CaasDemoHanler1)
+	sf.Pool().CaaS("ConnName1", "funcName2", common.Save, caas.CaasDemoHanler1)
 
 	// 1. 加载配置文件并构建Flow
 	if err := file.ConfigImportYaml("./load_conf/"); err != nil {

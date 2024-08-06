@@ -108,15 +108,15 @@ func NewSfFunction(flow sf.Flow, config *config.SfFuncConfig) sf.Function {
 
 	//工厂生产泛化对象
 	switch common.SfMode(config.FMode) {
-	case common.V:
+	case common.Verify:
 		f = NewSfFunctionV() // +++
-	case common.S:
+	case common.Save:
 		f = NewSfFunctionS() // +++
-	case common.L:
+	case common.Load:
 		f = NewSfFunctionL() // +++
-	case common.C:
+	case common.Calculate:
 		f = NewSfFunctionC() // +++
-	case common.E:
+	case common.Expand:
 		f = NewSfFunctionE() // +++
 	default:
 		//LOG ERROR

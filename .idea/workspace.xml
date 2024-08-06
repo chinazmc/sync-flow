@@ -7,14 +7,16 @@
     <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/sf_flow_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_flow_config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/config_import.go" beforeDir="false" afterPath="$PROJECT_DIR$/file/config_import.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flow/sf_flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/flow/sf_flow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName2.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName5.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/flow-FlowName5.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/flow-StuAvg.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/flow-StuAvg.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/load_conf/flow/func-FlowName3.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/load_conf/flow/func-FlowName3.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/sf_config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_config_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/sf_conn_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_conn_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_base_function.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_base_function.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_c.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_c.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_e.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_e.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_l.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_l.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_s.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_s.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/function/sf_function_v.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_v.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf/faas.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/faas.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf/pool.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/pool.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +70,19 @@
       <recent name="D:\company_project\sync-flow\log\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestActionAbort in sync-flow/test">
+  <component name="RunManager" selected="Go Test.TestActionAbort in sync-flow/test (1)">
+    <configuration name="TestActionAbort in sync-flow/test (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="sync-flow" />
+      <working_directory value="$PROJECT_DIR$/test" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="sync-flow/test" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestActionAbort\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestActionAbort in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="sync-flow" />
       <working_directory value="$PROJECT_DIR$/test" />
@@ -81,7 +95,7 @@
       <pattern value="^\QTestActionAbort\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestActionForceEntry in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestActionDataReuse in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="sync-flow" />
       <working_directory value="$PROJECT_DIR$/test" />
       <root_directory value="$PROJECT_DIR$" />
@@ -90,19 +104,7 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestActionForceEntry\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestActionJumpFunc in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="sync-flow" />
-      <working_directory value="$PROJECT_DIR$/test" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="sync-flow/test" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestActionJumpFunc\E$" />
+      <pattern value="^\QTestActionDataReuse\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestAutoInjectParamWithConfig in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -131,11 +133,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestActionAbort in sync-flow/test (1)" />
+        <item itemvalue="Go Test.TestActionDataReuse in sync-flow/test" />
         <item itemvalue="Go Test.TestActionAbort in sync-flow/test" />
         <item itemvalue="Go Test.TestAutoInjectParamWithConfig in sync-flow/test" />
         <item itemvalue="Go Test.TestForkFlow in sync-flow/test" />
-        <item itemvalue="Go Test.TestActionJumpFunc in sync-flow/test" />
-        <item itemvalue="Go Test.TestActionForceEntry in sync-flow/test" />
       </list>
     </recent_temporary>
   </component>
@@ -176,7 +178,8 @@
     <MESSAGE value="feat: 反射自适应注册FaaS形参类型" />
     <MESSAGE value="fix: 修改日志打印方式，添加func配置信息到flow" />
     <MESSAGE value="feat: Connector Call方法添加回参" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Connector Call方法添加回参" />
+    <MESSAGE value="chore: 添加readme内容，修改部分参数名" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: 添加readme内容，修改部分参数名" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

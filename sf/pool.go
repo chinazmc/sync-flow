@@ -193,8 +193,8 @@ func (pool *sfPool) CaaS(cname string, fname string, mode common.SfMode, c CaaS)
 		pool.cTree[cname] = make(connSL)
 
 		//初始化各类型FunctionMode
-		pool.cTree[cname][common.S] = make(connFuncRouter)
-		pool.cTree[cname][common.L] = make(connFuncRouter)
+		pool.cTree[cname][common.Save] = make(connFuncRouter)
+		pool.cTree[cname][common.Load] = make(connFuncRouter)
 	}
 
 	if _, ok := pool.cTree[cname][mode][fname]; !ok {

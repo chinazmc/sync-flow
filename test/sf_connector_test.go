@@ -22,7 +22,7 @@ func TestNewSfConnector(t *testing.T) {
 
 	// 0. 注册ConnectorInit 和 Connector 回调业务
 	sf.Pool().CaaSInit("ConnName1", caas.InitConnDemo1)
-	sf.Pool().CaaS("ConnName1", "funcName2", common.S, caas.CaasDemoHanler1)
+	sf.Pool().CaaS("ConnName1", "funcName2", common.Save, caas.CaasDemoHanler1)
 
 	// 1. 创建3个SfFunction配置实例, 其中myFuncConfig2 有Connector配置
 	source1 := config.SfSource{
@@ -35,7 +35,7 @@ func TestNewSfConnector(t *testing.T) {
 		Must: []string{"order_id", "user_id"},
 	}
 
-	myFuncConfig1 := config.NewFuncConfig("funcName1", common.C, &source1, nil)
+	myFuncConfig1 := config.NewFuncConfig("funcName1", common.Calculate, &source1, nil)
 	if myFuncConfig1 == nil {
 		panic("myFuncConfig1 is nil")
 	}
@@ -44,12 +44,12 @@ func TestNewSfConnector(t *testing.T) {
 		CName: "ConnName1",
 	}
 
-	myFuncConfig2 := config.NewFuncConfig("funcName2", common.S, &source2, &option)
+	myFuncConfig2 := config.NewFuncConfig("funcName2", common.Save, &source2, &option)
 	if myFuncConfig2 == nil {
 		panic("myFuncConfig2 is nil")
 	}
 
-	myFuncConfig3 := config.NewFuncConfig("funcName3", common.E, &source2, nil)
+	myFuncConfig3 := config.NewFuncConfig("funcName3", common.Expand, &source2, nil)
 	if myFuncConfig3 == nil {
 		panic("myFuncConfig3 is nil")
 	}

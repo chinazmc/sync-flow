@@ -9,11 +9,6 @@ import (
 )
 
 // FaaS Function as a Service
-
-// 将
-// type FaaS func(context.Context, Flow) error
-// 改为
-// type FaaS func(context.Context, Flow, ...interface{}) error
 // 可以通过可变参数的任意输入类型进行数据传递
 type FaaS interface{}
 
