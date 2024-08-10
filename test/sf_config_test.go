@@ -14,11 +14,11 @@ func TestNewFuncConfig(t *testing.T) {
 	}
 
 	option := config.SfFuncOption{
-		CName:        "connectorName1",
+		ConnName:     "connectorName1",
 		RetryTimes:   3,
 		RetryDuriton: 300,
 
-		Params: config.FParam{
+		Params: config.FuncParam{
 			"param1": "value1",
 			"param2": "value2",
 		},
@@ -33,7 +33,7 @@ func TestNewFlowConfig(t *testing.T) {
 
 	flowFuncParams1 := config.SfFunctionParam{
 		FuncName: "funcName1",
-		Params: config.FParam{
+		Params: config.FuncParam{
 			"flowSetFunParam1": "value1",
 			"flowSetFunParam2": "value2",
 		},
@@ -41,7 +41,7 @@ func TestNewFlowConfig(t *testing.T) {
 
 	flowFuncParams2 := config.SfFunctionParam{
 		FuncName: "funcName2",
-		Params: config.FParam{
+		Params: config.FuncParam{
 			"default": "value1",
 		},
 	}
@@ -60,11 +60,11 @@ func TestNewConnConfig(t *testing.T) {
 	}
 
 	option := config.SfFuncOption{
-		CName:        "connectorName1",
+		ConnName:     "connectorName1",
 		RetryTimes:   3,
 		RetryDuriton: 300,
 
-		Params: config.FParam{
+		Params: config.FuncParam{
 			"param1": "value1",
 			"param2": "value2",
 		},
@@ -72,7 +72,7 @@ func TestNewConnConfig(t *testing.T) {
 
 	myFunc1 := config.NewFuncConfig("funcName1", common.Save, &source, &option)
 
-	connParams := config.FParam{
+	connParams := config.FuncParam{
 		"param1": "value1",
 		"param2": "value2",
 	}

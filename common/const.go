@@ -11,10 +11,10 @@ const (
 	SfIdJoinChar       = "-"
 )
 const (
-	// FunctionIdFirstVirtual 为首结点Function上一层虚拟的Function ID
-	FunctionIdFirstVirtual = "FunctionIdFirstVirtual"
-	// FunctionIdLastVirtual 为尾结点Function下一层虚拟的Function ID
-	FunctionIdLastVirtual = "FunctionIdLastVirtual"
+	// FunctionLinkListFirstVirtualNode 为首结点Function上一层虚拟的Function ID
+	FunctionLinkListFirstVirtualNode = "FunctionLinkListFirstVirtualNode"
+	// FunctionLinkListLastVirtualNode 为尾结点Function下一层虚拟的Function ID
+	FunctionLinkListLastVirtualNode = "FunctionLinkListLastVirtualNode"
 )
 
 type SfMode string
@@ -59,8 +59,8 @@ const (
 
 // cache
 const (
-	// DeFaultFlowCacheCleanUp SfFlow中Flow对象Cache缓存默认的清理内存时间
-	DeFaultFlowCacheCleanUp = 5 //单位 min
+	// DeFaultCacheCleanUp SfFlow中Flow对象Cache缓存默认的清理内存时间
+	DeFaultCacheCleanUp = 5 //单位 min
 	// DefaultExpiration 默认GoCahce时间 ，永久保存
 	DefaultExpiration time.Duration = 0
 )

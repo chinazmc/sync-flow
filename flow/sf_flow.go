@@ -20,12 +20,12 @@ import (
 // SfFlow 用于贯穿整条流式计算的上下文环境
 type SfFlow struct {
 	// 基础信息
-	Id   string               // Flow的分布式实例ID(用于SfFlow内部区分不同实例)
+	Id   string               // Flow的ID
 	Name string               // Flow的可读名称
 	Conf *config.SfFlowConfig // Flow配置策略
 
 	// Function列表
-	Funcs          map[string]sf.Function // 当前flow拥有的全部管理的全部Function对象, key: FunctionName
+	FuncMap        map[string]sf.Function // 当前flow拥有的全部管理的全部Function对象, key: FunctionName
 	FlowHead       sf.Function            // 当前Flow所拥有的Function列表表头
 	FlowTail       sf.Function            // 当前Flow所拥有的Function列表表尾
 	flock          sync.RWMutex           // 管理链表插入读写的锁
@@ -34,8 +34,8 @@ type SfFlow struct {
 	PrevFunctionId string                 // 当前执行到的Function 上一层FunctionID(策略配置ID)
 
 	// Function列表参数
-	funcParams map[string]config.FParam // flow在当前Function的自定义固定配置参数,Key:function的实例NsID, value:FParam
-	fplock     sync.RWMutex             // 管理funcParams的读写锁
+	funcParams map[string]config.FuncParam // flow在当前Function的自定义固定配置参数,Key:function的实例NsID, value:FParam
+	fplock     sync.RWMutex                // 管理funcParams的读写锁
 
 	buffer common.SfRowArr  // 用来临时存放输入字节数据的内部Buf, 一条数据为interface{}, 多条数据为[]interface{} 也就是SfBatch
 	data   common.SfDataMap // 流式计算各个层级的数据源
@@ -47,8 +47,8 @@ type SfFlow struct {
 	// flow的本地缓存
 	cache *cache.Cache // Flow流的临时缓存上线文环境
 	// flow的metaData
-	metaData map[string]interface{} // Flow的自定义临时数据
-	mLock    sync.RWMutex           // 管理metaData的读写锁
+	metaData     map[string]interface{} // Flow的自定义临时数据
+	metaDataLock sync.RWMutex           // 管理metaData的读写锁
 }
 
 // NewSfFlow 创建一个SfFlow.
@@ -62,30 +62,32 @@ func NewSfFlow(conf *config.SfFlowConfig) sf.Flow {
 	flow.Conf = conf
 
 	// Function列表
-	flow.Funcs = make(map[string]sf.Function)
-	flow.funcParams = make(map[string]config.FParam)
+	flow.FuncMap = make(map[string]sf.Function)
+	flow.funcParams = make(map[string]config.FuncParam)
 
 	flow.data = make(common.SfDataMap)
 
 	// 初始化本地缓存
-	flow.cache = cache.New(cache.NoExpiration, common.DeFaultFlowCacheCleanUp*time.Minute)
+	flow.cache = cache.New(cache.NoExpiration, common.DeFaultCacheCleanUp*time.Minute)
 	// 初始化临时数据
 	flow.metaData = make(map[string]interface{})
 	return flow
 }
 
 // Link 将Function链接到Flow中, 同时会将Function的配置参数添加到Flow的配置中
-// fConf: 当前Function策略
-// fParams: 当前Flow携带的Function动态参数
-func (flow *SfFlow) Link(fConf *config.SfFuncConfig, fParams config.FParam) error {
+// funcConf: 当前Function策略
+// funcParams: 当前Flow携带的Function动态参数
+func (flow *SfFlow) Link(funcConf *config.SfFuncConfig, funcParams config.FuncParam) error {
 
 	// Flow 添加Function
-	_ = flow.AppendNewFunction(fConf, fParams)
-
+	err := flow.AppendNewFunction(funcConf, funcParams)
+	if err != nil {
+		return err
+	}
 	// FlowConfig 添加Function
 	flowFuncParam := config.SfFunctionParam{
-		FuncName: fConf.FName,
-		Params:   fParams,
+		FuncName: funcConf.FuncName,
+		Params:   funcParams,
 	}
 	flow.Conf.AppendFunctionConfig(flowFuncParam)
 
@@ -93,11 +95,11 @@ func (flow *SfFlow) Link(fConf *config.SfFuncConfig, fParams config.FParam) erro
 }
 
 // AppendNewFunction 将一个新的Function追加到到Flow中
-func (flow *SfFlow) AppendNewFunction(fConf *config.SfFuncConfig, fParams config.FParam) error {
+func (flow *SfFlow) AppendNewFunction(fConf *config.SfFuncConfig, fParams config.FuncParam) error {
 	// 创建Function
 	f := function.NewSfFunction(flow, fConf)
 
-	if fConf.Option.CName != "" {
+	if fConf.Option.ConnName != "" {
 		// 当前Function有Connector关联，需要初始化Connector实例
 
 		// 获取Connector配置
@@ -127,7 +129,7 @@ func (flow *SfFlow) AppendNewFunction(fConf *config.SfFuncConfig, fParams config
 }
 
 // appendFunc 将Function添加到Flow中, 链表操作
-func (flow *SfFlow) appendFunc(function sf.Function, fParam config.FParam) error {
+func (flow *SfFlow) appendFunc(function sf.Function, fParam config.FuncParam) error {
 
 	if function == nil {
 		return errors.New("AppendFunc append nil to List")
@@ -154,10 +156,10 @@ func (flow *SfFlow) appendFunc(function sf.Function, fParam config.FParam) error
 	}
 
 	//将Function Name 详细Hash对应关系添加到flow对象中
-	flow.Funcs[function.GetConfig().FName] = function
+	flow.FuncMap[function.GetConfig().FuncName] = function
 
 	//先添加function 默认携带的Params参数
-	params := make(config.FParam)
+	params := make(config.FuncParam)
 	for key, value := range function.GetConfig().Option.Params {
 		params[key] = value
 	}
@@ -190,7 +192,7 @@ func (flow *SfFlow) Run(ctx context.Context) error {
 	var funcStart time.Time
 	var flowStart time.Time
 	// 因为此时还没有执行任何Function, 所以PrevFunctionId为FirstVirtual 因为没有上一层Function
-	flow.PrevFunctionId = common.FunctionIdFirstVirtual
+	flow.PrevFunctionId = common.FunctionLinkListFirstVirtualNode
 
 	// 提交数据流原始数据
 	if err := flow.commitSrcData(ctx); err != nil {
@@ -212,8 +214,8 @@ func (flow *SfFlow) Run(ctx context.Context) error {
 		fid := fn.GetId()
 		flow.ThisFunction = fn
 		flow.ThisFunctionId = fid
-		fName := fn.GetConfig().FName
-		fMode := fn.GetConfig().FMode
+		fName := fn.GetConfig().FuncName
+		fMode := fn.GetConfig().FuncMode
 		if config.GlobalConfig.EnableProm == true {
 			// 统计Function调度次数
 			metrics.Metrics.FuncScheduleCntsTotal.WithLabelValues(fName, fMode).Inc()
@@ -295,7 +297,7 @@ func (flow *SfFlow) GetConfig() *config.SfFlowConfig {
 
 // GetFuncConfigByName 得到当前Flow的配置
 func (flow *SfFlow) GetFuncConfigByName(funcName string) *config.SfFuncConfig {
-	if f, ok := flow.Funcs[funcName]; ok {
+	if f, ok := flow.FuncMap[funcName]; ok {
 		return f.GetConfig()
 	} else {
 		log.GetLogger().ErrorF("GetFuncConfigByName(): Function %s not found", funcName)
@@ -321,12 +323,12 @@ func (flow *SfFlow) Fork(ctx context.Context) sf.Flow {
 	newFlow := NewSfFlow(config)
 
 	for _, fp := range flow.Conf.Funcs {
-		if _, ok := flow.funcParams[flow.Funcs[fp.FuncName].GetId()]; !ok {
+		if _, ok := flow.funcParams[flow.FuncMap[fp.FuncName].GetId()]; !ok {
 			//当前function没有配置Params
-			newFlow.AppendNewFunction(flow.Funcs[fp.FuncName].GetConfig(), nil)
+			newFlow.AppendNewFunction(flow.FuncMap[fp.FuncName].GetConfig(), nil)
 		} else {
 			//当前function有配置Params
-			newFlow.AppendNewFunction(flow.Funcs[fp.FuncName].GetConfig(), fp.Params)
+			newFlow.AppendNewFunction(flow.FuncMap[fp.FuncName].GetConfig(), fp.Params)
 		}
 	}
 
@@ -337,7 +339,7 @@ func (flow *SfFlow) Fork(ctx context.Context) sf.Flow {
 }
 
 // GetFuncParamsAllFuncs 得到Flow中所有Function的FuncParams，取出全部Key-Value
-func (flow *SfFlow) GetFuncParamsAllFuncs() map[string]config.FParam {
+func (flow *SfFlow) GetFuncParamsAllFuncs() map[string]config.FuncParam {
 	flow.fplock.RLock()
 	defer flow.fplock.RUnlock()
 

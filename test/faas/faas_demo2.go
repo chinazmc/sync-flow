@@ -13,7 +13,7 @@ func FuncDemo2Handler(ctx context.Context, flow sf.Flow) error {
 	fmt.Println("---> Call funcName2Handler ----")
 
 	for index, row := range flow.Input() {
-		str := fmt.Sprintf("In FuncName = %s, FuncId = %s, row = %s", flow.GetThisFuncConf().FName, flow.GetThisFunction().GetId(), row)
+		str := fmt.Sprintf("In FuncName = %s, FuncId = %s, row = %s", flow.GetThisFuncConf().FuncName, flow.GetThisFunction().GetId(), row)
 		fmt.Println(str)
 
 		conn, err := flow.GetConnector()
@@ -28,7 +28,7 @@ func FuncDemo2Handler(ctx context.Context, flow sf.Flow) error {
 		}
 
 		// 计算结果数据
-		resultStr := fmt.Sprintf("data from funcName[%s], index = %d", flow.GetThisFuncConf().FName, index)
+		resultStr := fmt.Sprintf("data from funcName[%s], index = %d", flow.GetThisFuncConf().FuncName, index)
 
 		// 提交结果数据
 		_ = flow.CommitRow(resultStr)

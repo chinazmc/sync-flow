@@ -211,15 +211,15 @@ func (pool *sfPool) CaaS(cname string, fname string, mode common.SfMode, c CaaS)
 func (pool *sfPool) CallConnector(ctx context.Context, flow Flow, conn Connector, args interface{}) (interface{}, error) {
 	fn := flow.GetThisFunction()
 	fnConf := fn.GetConfig()
-	mode := common.SfMode(fnConf.FMode)
+	mode := common.SfMode(fnConf.FuncMode)
 
-	if callback, ok := pool.cTree[conn.GetName()][mode][fnConf.FName]; ok {
+	if callback, ok := pool.cTree[conn.GetName()][mode][fnConf.FuncName]; ok {
 		return callback(ctx, conn, fn, flow, args)
 	}
 
-	log.GetLogger().ErrorFX(ctx, "CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.\n", conn.GetName(), fnConf.FName, mode)
+	log.GetLogger().ErrorFX(ctx, "CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.\n", conn.GetName(), fnConf.FuncName, mode)
 
-	return nil, errors.New(fmt.Sprintf("CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.", conn.GetName(), fnConf.FName, mode))
+	return nil, errors.New(fmt.Sprintf("CName:%s FName:%s mode:%s Can not find in SfPool, Not Added.", conn.GetName(), fnConf.FuncName, mode))
 }
 
 // GetFlows 得到全部的Flow

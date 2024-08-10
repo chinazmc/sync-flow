@@ -67,7 +67,7 @@ func (base *BaseFunction) GetId() string {
 func (base *BaseFunction) GetPrevId() string {
 	if base.P == nil {
 		//Function为首结点
-		return common.FunctionIdFirstVirtual
+		return common.FunctionLinkListFirstVirtualNode
 	}
 	return base.P.GetId()
 }
@@ -75,7 +75,7 @@ func (base *BaseFunction) GetPrevId() string {
 func (base *BaseFunction) GetNextId() string {
 	if base.N == nil {
 		//Function为尾结点
-		return common.FunctionIdLastVirtual
+		return common.FunctionLinkListLastVirtualNode
 	}
 	return base.N.GetId()
 }
@@ -107,7 +107,7 @@ func NewSfFunction(flow sf.Flow, config *config.SfFuncConfig) sf.Function {
 	var f sf.Function
 
 	//工厂生产泛化对象
-	switch common.SfMode(config.FMode) {
+	switch common.SfMode(config.FuncMode) {
 	case common.Verify:
 		f = NewSfFunctionV() // +++
 	case common.Save:

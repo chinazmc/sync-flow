@@ -4,19 +4,41 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="">
+    <list default="true" id="a5af49d4-a550-4934-a1ea-ecd3bce61aef" name="Changes" comment="chore: 添加readme内容，整理项目代码">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/sf_conn_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_conn_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/sf_flow_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_flow_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/sf_func_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_func_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/sf_global_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/sf_global_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conn/sf_connector.go" beforeDir="false" afterPath="$PROJECT_DIR$/conn/sf_connector.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file/config_export.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file/config_import.go" beforeDir="false" afterPath="$PROJECT_DIR$/file/config_import.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow/sf_flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/flow/sf_flow.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow/sf_flow_action.go" beforeDir="false" afterPath="$PROJECT_DIR$/flow/sf_flow_action.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow/sf_flow_data.go" beforeDir="false" afterPath="$PROJECT_DIR$/flow/sf_flow_data.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_base_function.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_base_function.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_c.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_c.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_e.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_e.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_l.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_l.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_s.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_s.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/function/sf_function_v.go" beforeDir="false" afterPath="$PROJECT_DIR$/function/sf_function_v.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sf/faas.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/faas.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/sf_log.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/sf_log.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf/action.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/action.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf/flow.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/flow.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sf/pool.go" beforeDir="false" afterPath="$PROJECT_DIR$/sf/pool.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/caas/caas_demo1.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/caas/caas_demo1.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_abort.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_abort.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_data_reuse.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_data_reuse.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_demo1.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_demo1.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_demo2.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_demo2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_demo3.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_demo3.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_jump.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_jump.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/faas/faas_no_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/faas/faas_no_result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sf_config_export_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sf_config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_config_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sf_connector_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_connector_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sf_pool_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sf_pool_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +81,7 @@
     &quot;last_opened_file_path&quot;: &quot;D:/company_project/sync-flow&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.goide.configuration.GoProjectSettingsConfigurable&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -70,7 +92,15 @@
       <recent name="D:\company_project\sync-flow\log\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestActionAbort in sync-flow/test (1)">
+  <component name="RunManager" selected="Go Test.TestActionForceEntry in sync-flow/test">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="sync-flow" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestActionAbort in sync-flow/test (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="sync-flow" />
       <working_directory value="$PROJECT_DIR$/test" />
@@ -107,6 +137,18 @@
       <pattern value="^\QTestActionDataReuse\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestActionForceEntry in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="sync-flow" />
+      <working_directory value="$PROJECT_DIR$/test" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="sync-flow/test" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestActionForceEntry\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestAutoInjectParamWithConfig in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="sync-flow" />
       <working_directory value="$PROJECT_DIR$/test" />
@@ -119,25 +161,22 @@
       <pattern value="^\QTestAutoInjectParamWithConfig\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestForkFlow in sync-flow/test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="sync-flow" />
-      <working_directory value="$PROJECT_DIR$/test" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="sync-flow/test" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestForkFlow\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestActionAbort in sync-flow/test (1)" />
+        <item itemvalue="Go Test.TestActionForceEntry in sync-flow/test" />
         <item itemvalue="Go Test.TestActionDataReuse in sync-flow/test" />
+        <item itemvalue="Go Test.TestActionAbort in sync-flow/test (1)" />
         <item itemvalue="Go Test.TestActionAbort in sync-flow/test" />
         <item itemvalue="Go Test.TestAutoInjectParamWithConfig in sync-flow/test" />
-        <item itemvalue="Go Test.TestForkFlow in sync-flow/test" />
       </list>
     </recent_temporary>
   </component>
@@ -179,7 +218,8 @@
     <MESSAGE value="fix: 修改日志打印方式，添加func配置信息到flow" />
     <MESSAGE value="feat: Connector Call方法添加回参" />
     <MESSAGE value="chore: 添加readme内容，修改部分参数名" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: 添加readme内容，修改部分参数名" />
+    <MESSAGE value="chore: 添加readme内容，整理项目代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: 添加readme内容，整理项目代码" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
@@ -196,11 +236,6 @@
           <url>file://$PROJECT_DIR$/file/config_import.go</url>
           <line>102</line>
           <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/test/sf_config_export_test.go</url>
-          <line>30</line>
-          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/test/sf_action_test.go</url>
@@ -221,41 +256,6 @@
           <url>file://$PROJECT_DIR$/test/sf_auto_inject_param_test.go</url>
           <line>20</line>
           <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/flow/sf_flow.go</url>
-          <line>112</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/file/config_import.go</url>
-          <line>182</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/file/config_import.go</url>
-          <line>183</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/file/config_import.go</url>
-          <line>154</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/test/sf_action_test.go</url>
-          <line>25</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/file/config_import.go</url>
-          <line>159</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/file/config_import.go</url>
-          <line>160</line>
-          <option name="timeStamp" value="39" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

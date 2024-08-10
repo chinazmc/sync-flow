@@ -41,7 +41,7 @@ func TestNewSfConnector(t *testing.T) {
 	}
 
 	option := config.SfFuncOption{
-		CName: "ConnName1",
+		ConnName: "ConnName1",
 	}
 
 	myFuncConfig2 := config.NewFuncConfig("funcName2", common.Save, &source2, &option)

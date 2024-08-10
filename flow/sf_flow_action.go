@@ -11,7 +11,7 @@ import (
 func (flow *SfFlow) dealAction(ctx context.Context, fn sf.Function) (sf.Function, error) {
 
 	// DataReuse Action
-	if flow.action.DataReuse {
+	if flow.action.DataReuseEnable {
 		if err := flow.commitReuseData(ctx); err != nil {
 			return nil, err
 		}
@@ -22,7 +22,7 @@ func (flow *SfFlow) dealAction(ctx context.Context, fn sf.Function) (sf.Function
 	}
 
 	// ForceEntryNext Action
-	if flow.action.ForceEntryNext {
+	if flow.action.EntryNextForceEnable {
 		if err := flow.commitVoidData(ctx); err != nil {
 			return nil, err
 		}
@@ -30,13 +30,13 @@ func (flow *SfFlow) dealAction(ctx context.Context, fn sf.Function) (sf.Function
 	}
 
 	// JumpFunc Action
-	if flow.action.JumpFunc != "" {
-		if _, ok := flow.Funcs[flow.action.JumpFunc]; !ok {
+	if flow.action.FuncJumpEnable != "" {
+		if _, ok := flow.FuncMap[flow.action.FuncJumpEnable]; !ok {
 			//当前JumpFunc不在flow中
-			return nil, errors.New(fmt.Sprintf("Flow Jump -> %s is not in Flow", flow.action.JumpFunc))
+			return nil, errors.New(fmt.Sprintf("Flow Jump -> %s is not in Flow", flow.action.FuncJumpEnable))
 		}
 
-		jumpFunction := flow.Funcs[flow.action.JumpFunc]
+		jumpFunction := flow.FuncMap[flow.action.FuncJumpEnable]
 		// 更新上层Function
 		flow.PrevFunctionId = jumpFunction.GetPrevId()
 		fn = jumpFunction
@@ -52,7 +52,7 @@ func (flow *SfFlow) dealAction(ctx context.Context, fn sf.Function) (sf.Function
 	}
 
 	// Abort Action 强制终止
-	if flow.action.Abort {
+	if flow.action.FlowAbortEnable {
 		flow.abort = true
 	}
 

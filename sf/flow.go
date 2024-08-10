@@ -8,21 +8,20 @@ import (
 )
 
 type Flow interface {
-	// Run 调度Flow，依次调度Flow中的Function并且执行
+	// Run 启动flow，获取数据进行func 链表的顺序处理
 	Run(ctx context.Context) error
-	// Link 将Flow中的Function按照配置文件中的配置进行连接, 同时Flow的配置也会更新
-	Link(fConf *config.SfFuncConfig, fParams config.FParam) error
-	// AppendNewFunction 将一个新的Function追加到到Flow中
-	AppendNewFunction(fConf *config.SfFuncConfig, fParams config.FParam) error
-	//CommitRow 提交flow数据到即将执行的function层
+	// Link 按照func 配置来将func 加入到flow
+	Link(fConf *config.SfFuncConfig, fParams config.FuncParam) error
+	// AppendNewFunction 将Function追加到到Flow中
+	AppendNewFunction(fConf *config.SfFuncConfig, fParams config.FuncParam) error
+	//CommitRow 提交数据到即将执行的function层
 	CommitRow(row interface{}) error
 	// CommitRowBatch 提交Flow数据到即将执行的Function层(批量提交)
-	// row: Must be a slice
 	CommitRowBatch(row interface{}) error
-	// Input 得到flow当前执行Function的输入源数据
+	// Input 得到flow当前执行Function的正在处理的数据
 	Input() common.SfRowArr
 
-	// GetName 得到Flow的名称
+	// GetName 获取Flow的名称
 	GetName() string
 	// GetThisFunction 得到当前正在执行的Function
 	GetThisFunction() Function
@@ -52,11 +51,11 @@ type Flow interface {
 	// GetFuncParam 得到Flow的当前正在执行的Function的配置默认参数，取出一对key-value
 	GetFuncParam(key string) string
 	// GetFuncParamAll 得到Flow的当前正在执行的Function的配置默认参数，取出全部Key-Value
-	GetFuncParamAll() config.FParam
+	GetFuncParamAll() config.FuncParam
 	// GetId 得到Flow的Id
 	GetId() string
 	// Fork 得到Flow的一个副本(深拷贝)
 	Fork(ctx context.Context) Flow
 	// GetFuncParamsAllFuncs 得到Flow中所有Function的FuncParams，取出全部Key-Value
-	GetFuncParamsAllFuncs() map[string]config.FParam
+	GetFuncParamsAllFuncs() map[string]config.FuncParam
 }

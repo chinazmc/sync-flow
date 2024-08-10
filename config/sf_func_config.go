@@ -6,8 +6,8 @@ import (
 	"sync-flow/log"
 )
 
-// FParam 在当前Flow中Function定制固定配置参数类型
-type FParam map[string]string
+// FuncParam 在当前Flow中Function定制固定配置参数类型
+type FuncParam map[string]string
 
 // SfSource 表示当前Function的业务源
 type SfSource struct {
@@ -17,35 +17,35 @@ type SfSource struct {
 
 // SfFuncOption 可选配置
 type SfFuncOption struct {
-	CName        string `yaml:"cname"`           //连接器Connector名称
-	RetryTimes   int    `yaml:"retry_times"`     //选填,Function调度重试(不包括正常调度)最大次数
-	RetryDuriton int    `yaml:"return_duration"` //选填,Function调度每次重试最大时间间隔(单位:ms)
-	Params       FParam `yaml:"default_params"`  //选填,在当前Flow中Function定制固定配置参数
+	ConnName     string    `yaml:"cname"`           //连接器Connector名称
+	RetryTimes   int       `yaml:"retry_times"`     //选填,Function调度重试(不包括正常调度)最大次数
+	RetryDuriton int       `yaml:"return_duration"` //选填,Function调度每次重试最大时间间隔(单位:ms)
+	Params       FuncParam `yaml:"default_params"`  //选填,在当前Flow中Function定制固定配置参数
 }
 
 // SfFuncConfig 一个SfFunction策略配置
 type SfFuncConfig struct {
-	SfType string       `yaml:"sfType"`
-	FName  string       `yaml:"fname"`
-	FMode  string       `yaml:"fmode"`
-	Source SfSource     `yaml:"source"`
-	Option SfFuncOption `yaml:"option"`
+	SfType   string       `yaml:"sfType"`
+	FuncName string       `yaml:"fname"`
+	FuncMode string       `yaml:"fmode"`
+	Source   SfSource     `yaml:"source"`
+	Option   SfFuncOption `yaml:"option"`
 
 	connConf *SfConnConfig
 }
 
-func (fConf *SfFuncConfig) AddConnConfig(cConf *SfConnConfig) error {
-	if cConf == nil {
+func (fConf *SfFuncConfig) AddConnConfig(connConf *SfConnConfig) error {
+	if connConf == nil {
 		return errors.New("SfConnConfig is nil")
 	}
 
 	// Function需要和Connector进行关联
-	fConf.connConf = cConf
+	fConf.connConf = connConf
 
 	// Connector需要和Function进行关联
-	_ = cConf.WithFunc(fConf)
+	_ = connConf.WithFunc(fConf)
 	// 更新Function配置中的CName
-	fConf.Option.CName = cConf.CName
+	fConf.Option.ConnName = connConf.ConnName
 	return nil
 }
 
@@ -63,7 +63,7 @@ func NewFuncConfig(
 	source *SfSource, option *SfFuncOption) *SfFuncConfig {
 
 	config := new(SfFuncConfig)
-	config.FName = funcName
+	config.FuncName = funcName
 
 	if source == nil {
 		defaultSource := SfSource{
@@ -74,18 +74,7 @@ func NewFuncConfig(
 	}
 	config.Source = *source
 
-	config.FMode = string(mode)
-
-	//FunctionS 和 L 需要必传SfConnector参数,原因是S和L需要通过Connector进行建立流式关系
-	//if mode == common.Save || mode == common.L {
-	//	if option == nil {
-	//		log.GetLogger().ErrorF("Funcion S/L need option->Cid\n")
-	//		return nil
-	//	} else if option.CName == "" {
-	//		log.GetLogger().ErrorF("Funcion S/L need option->Cid\n")
-	//		return nil
-	//	}
-	//}
+	config.FuncMode = string(mode)
 
 	if option != nil {
 		config.Option = *option

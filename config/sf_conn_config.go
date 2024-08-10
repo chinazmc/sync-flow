@@ -11,7 +11,7 @@ type SfConnConfig struct {
 	//配置类型
 	SfType string `yaml:"sfType"`
 	//唯一描述标识
-	CName string `yaml:"cname"`
+	ConnName string `yaml:"cname"`
 	//基础存储媒介地址
 	Addrs string `yaml:"addrs"`
 	//存储媒介引擎类型"Mysql" "Redis" "Kafka"等
@@ -26,9 +26,9 @@ type SfConnConfig struct {
 }
 
 // NewConnConfig 创建一个SfConnector策略配置对象, 用于描述一个SfConnector信息
-func NewConnConfig(cName string, addr string, t common.SfConnType, key string, param FParam) *SfConnConfig {
+func NewConnConfig(cName string, addr string, t common.SfConnType, key string, param FuncParam) *SfConnConfig {
 	strategy := new(SfConnConfig)
-	strategy.CName = cName
+	strategy.ConnName = cName
 	strategy.Addrs = addr
 
 	strategy.Type = t
@@ -41,13 +41,13 @@ func NewConnConfig(cName string, addr string, t common.SfConnType, key string, p
 // WithFunc Connector与Function进行关系绑定
 func (cConfig *SfConnConfig) WithFunc(fConfig *SfFuncConfig) error {
 
-	switch common.SfMode(fConfig.FMode) {
+	switch common.SfMode(fConfig.FuncMode) {
 	case common.Save:
-		cConfig.Save = append(cConfig.Save, fConfig.FName)
+		cConfig.Save = append(cConfig.Save, fConfig.FuncName)
 	case common.Load:
-		cConfig.Load = append(cConfig.Load, fConfig.FName)
+		cConfig.Load = append(cConfig.Load, fConfig.FuncName)
 	default:
-		return errors.New(fmt.Sprintf("Wrong SfMode %s", fConfig.FMode))
+		return errors.New(fmt.Sprintf("Wrong SfMode %s", fConfig.FuncMode))
 	}
 
 	return nil

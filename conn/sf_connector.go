@@ -11,25 +11,25 @@ import (
 
 type SfConnector struct {
 	// Connector ID
-	CId string
+	ConnId string
 	// Connector Name
-	CName string
+	ConnName string
 	// Connector Config
 	Conf *config.SfConnConfig
 
 	// Connector Init
-	onceInit sync.Once
+	ConnInit sync.Once
 	// SfConnector的自定义临时数据
 	metaData map[string]interface{}
 	// 管理metaData的读写锁
-	mLock sync.RWMutex
+	metaDataLock sync.RWMutex
 }
 
 // NewSfConnector 根据配置策略创建一个SfConnector
 func NewSfConnector(config *config.SfConnConfig) *SfConnector {
 	conn := new(SfConnector)
-	conn.CId = id.SfID(common.SfIdTypeConnnector)
-	conn.CName = config.CName
+	conn.ConnId = id.SfID(common.SfIdTypeConnnector)
+	conn.ConnName = config.ConnName
 	conn.Conf = config
 	conn.metaData = make(map[string]interface{})
 	return conn
@@ -40,7 +40,7 @@ func (conn *SfConnector) Init() error {
 	var err error
 
 	//一个Connector只能执行初始化业务一次
-	conn.onceInit.Do(func() {
+	conn.ConnInit.Do(func() {
 		err = sf.Pool().CallConnInit(conn)
 	})
 
@@ -61,7 +61,7 @@ func (conn *SfConnector) Call(ctx context.Context, flow sf.Flow, args interface{
 }
 
 func (conn *SfConnector) GetName() string {
-	return conn.CName
+	return conn.ConnName
 }
 
 func (conn *SfConnector) GetConfig() *config.SfConnConfig {
@@ -69,13 +69,13 @@ func (conn *SfConnector) GetConfig() *config.SfConnConfig {
 }
 
 func (conn *SfConnector) GetId() string {
-	return conn.CId
+	return conn.ConnId
 }
 
 // GetMetaData 得到当前Connector的临时数据
 func (conn *SfConnector) GetMetaData(key string) interface{} {
-	conn.mLock.RLock()
-	defer conn.mLock.RUnlock()
+	conn.metaDataLock.RLock()
+	defer conn.metaDataLock.RUnlock()
 
 	data, ok := conn.metaData[key]
 	if !ok {
@@ -87,8 +87,8 @@ func (conn *SfConnector) GetMetaData(key string) interface{} {
 
 // SetMetaData 设置当前Connector的临时数据
 func (conn *SfConnector) SetMetaData(key string, value interface{}) {
-	conn.mLock.Lock()
-	defer conn.mLock.Unlock()
+	conn.metaDataLock.Lock()
+	defer conn.metaDataLock.Unlock()
 
 	conn.metaData[key] = value
 }

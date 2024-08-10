@@ -10,7 +10,7 @@ import (
 
 func CaasDemoHanler1(ctx context.Context, conn sf.Connector, fn sf.Function, flow sf.Flow, args interface{}) (interface{}, error) {
 	fmt.Printf("===> In CaasDemoHanler1: flowName: %s, cName:%s, fnName:%s, mode:%s\n",
-		flow.GetName(), conn.GetName(), fn.GetConfig().FName, fn.GetConfig().FMode)
+		flow.GetName(), conn.GetName(), fn.GetConfig().FuncName, fn.GetConfig().FuncMode)
 
 	fmt.Printf("===> Call Connector CaasDemoHanler1, args from funciton: %s\n", args)
 

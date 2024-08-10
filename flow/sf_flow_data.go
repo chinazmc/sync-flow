@@ -53,7 +53,7 @@ func (flow *SfFlow) commitSrcData(ctx context.Context) error {
 
 	// 首次提交，记录flow原始数据
 	// 因为首次提交，所以PrevFunctionId为FirstVirtual 因为没有上一层Function
-	flow.data[common.FunctionIdFirstVirtual] = batch
+	flow.data[common.FunctionLinkListFirstVirtualNode] = batch
 
 	// 清空缓冲Buf
 	flow.buffer = flow.buffer[0:0]
@@ -175,8 +175,8 @@ func (flow *SfFlow) SetCacheData(key string, value interface{}, Exp time.Duratio
 
 // GetMetaData 得到当前Flow对象的临时数据
 func (flow *SfFlow) GetMetaData(key string) interface{} {
-	flow.mLock.RLock()
-	defer flow.mLock.RUnlock()
+	flow.metaDataLock.RLock()
+	defer flow.metaDataLock.RUnlock()
 
 	data, ok := flow.metaData[key]
 	if !ok {
@@ -188,8 +188,8 @@ func (flow *SfFlow) GetMetaData(key string) interface{} {
 
 // SetMetaData 设置当前Flow对象的临时数据
 func (flow *SfFlow) SetMetaData(key string, value interface{}) {
-	flow.mLock.Lock()
-	defer flow.mLock.Unlock()
+	flow.metaDataLock.Lock()
+	defer flow.metaDataLock.Unlock()
 
 	flow.metaData[key] = value
 }
@@ -209,7 +209,7 @@ func (flow *SfFlow) GetFuncParam(key string) string {
 }
 
 // GetFuncParamAll 得到Flow的当前正在执行的Function的配置默认参数，取出全部Key-Value
-func (flow *SfFlow) GetFuncParamAll() config.FParam {
+func (flow *SfFlow) GetFuncParamAll() config.FuncParam {
 	flow.fplock.RLock()
 	defer flow.fplock.RUnlock()
 

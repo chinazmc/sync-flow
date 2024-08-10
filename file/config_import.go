@@ -16,9 +16,9 @@ import (
 )
 
 type allConfig struct {
-	Flows map[string]*config.SfFlowConfig
-	Funcs map[string]*config.SfFuncConfig
-	Conns map[string]*config.SfConnConfig
+	FlowConfigMap map[string]*config.SfFlowConfig
+	FuncConfigMap map[string]*config.SfFuncConfig
+	ConnConfigMap map[string]*config.SfConnConfig
 }
 
 // sfTypeFlowConfigure 解析Flow配置文件，yaml格式
@@ -33,12 +33,12 @@ func sfTypeFlowConfigure(all *allConfig, confData []byte, fileName string, sfTyp
 		return nil
 	}
 
-	if _, ok := all.Flows[flow.FlowName]; ok {
+	if _, ok := all.FlowConfigMap[flow.FlowName]; ok {
 		return errors.New(fmt.Sprintf("%s set repeat flow_id:%s", fileName, flow.FlowName))
 	}
 
 	// 加入配置集合中
-	all.Flows[flow.FlowName] = flow
+	all.FlowConfigMap[flow.FlowName] = flow
 
 	return nil
 }
@@ -49,12 +49,12 @@ func sfTypeFuncConfigure(all *allConfig, confData []byte, fileName string, sfTyp
 	if ok := yaml.Unmarshal(confData, function); ok != nil {
 		return errors.New(fmt.Sprintf("%s has wrong format sfType = %s", fileName, sfType))
 	}
-	if _, ok := all.Funcs[function.FName]; ok {
-		return errors.New(fmt.Sprintf("%s set repeat function_id:%s", fileName, function.FName))
+	if _, ok := all.FuncConfigMap[function.FuncName]; ok {
+		return errors.New(fmt.Sprintf("%s set repeat function_id:%s", fileName, function.FuncName))
 	}
 
 	// 加入配置集合中
-	all.Funcs[function.FName] = function
+	all.FuncConfigMap[function.FuncName] = function
 
 	return nil
 }
@@ -66,24 +66,24 @@ func sfTypeConnConfigure(all *allConfig, confData []byte, fileName string, sfTyp
 		return errors.New(fmt.Sprintf("%s is wrong format nsType = %s", fileName, sfType))
 	}
 
-	if _, ok := all.Conns[conn.CName]; ok {
-		return errors.New(fmt.Sprintf("%s set repeat conn_id:%s", fileName, conn.CName))
+	if _, ok := all.ConnConfigMap[conn.ConnName]; ok {
+		return errors.New(fmt.Sprintf("%s set repeat conn_id:%s", fileName, conn.ConnName))
 	}
 
 	// 加入配置集合中
-	all.Conns[conn.CName] = conn
+	all.ConnConfigMap[conn.ConnName] = conn
 
 	return nil
 }
 
-// parseConfigWalkYaml 全盘解析配置文件，yaml格式, 讲配置信息解析到allConfig中
-func parseConfigWalkYaml(loadPath string) (*allConfig, error) {
+// parseConfigTotalYaml 全盘解析配置文件，yaml格式, 讲配置信息解析到allConfig中
+func parseConfigTotalYaml(loadPath string) (*allConfig, error) {
 
 	all := new(allConfig)
 
-	all.Flows = make(map[string]*config.SfFlowConfig)
-	all.Funcs = make(map[string]*config.SfFuncConfig)
-	all.Conns = make(map[string]*config.SfConnConfig)
+	all.FlowConfigMap = make(map[string]*config.SfFlowConfig)
+	all.FuncConfigMap = make(map[string]*config.SfFuncConfig)
+	all.ConnConfigMap = make(map[string]*config.SfConnConfig)
 	if !filepath.IsAbs(loadPath) {
 		var err error
 		loadPath, err = filepath.Abs(loadPath)
@@ -141,12 +141,12 @@ func parseConfigWalkYaml(loadPath string) (*allConfig, error) {
 // ConfigImportYaml 全盘解析配置文件，yaml格式
 func ConfigImportYaml(loadPath string) error {
 
-	all, err := parseConfigWalkYaml(loadPath)
+	all, err := parseConfigTotalYaml(loadPath)
 	if err != nil {
 		return err
 	}
 
-	for flowName, flowConfig := range all.Flows {
+	for flowName, flowConfig := range all.FlowConfigMap {
 
 		// 构建一个Flow
 		newFlow := flow.NewSfFlow(flowConfig)
@@ -165,14 +165,14 @@ func ConfigImportYaml(loadPath string) error {
 }
 func buildFlow(all *allConfig, fp config.SfFunctionParam, newFlow sf.Flow, flowName string) error {
 	//加载当前Flow依赖的Function
-	if funcConfig, ok := all.Funcs[fp.FuncName]; !ok {
+	if funcConfig, ok := all.FuncConfigMap[fp.FuncName]; !ok {
 		return errors.New(fmt.Sprintf("FlowName [%s] need FuncName [%s], But has No This FuncName Config", flowName, fp.FuncName))
 	} else {
 		//flow add connector
-		if funcConfig.Option.CName != "" {
+		if funcConfig.Option.ConnName != "" {
 			// 加载当前Function依赖的Connector
-			if connConf, ok := all.Conns[funcConfig.Option.CName]; !ok {
-				return errors.New(fmt.Sprintf("FuncName [%s] need ConnName [%s], But has No This ConnName Config", fp.FuncName, funcConfig.Option.CName))
+			if connConf, ok := all.ConnConfigMap[funcConfig.Option.ConnName]; !ok {
+				return errors.New(fmt.Sprintf("FuncName [%s] need ConnName [%s], But has No This ConnName Config", fp.FuncName, funcConfig.Option.ConnName))
 			} else {
 				// Function Config 关联 Connector Config
 				_ = funcConfig.AddConnConfig(connConf)
